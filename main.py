@@ -20,18 +20,24 @@ def load_data(filepath):
         return {}
 
 
-if len(sys.argv) == 2:  # sys.argv is a list of command line arguments
+if 2 <= len(sys.argv) <= 3:  # sys.argv is a list of command line arguments
     command = sys.argv[1]  # get the command from the command line
+    if len(sys.argv) > 2:
+        key = sys.argv[2] # get the key from the command line if it exists
+    else:
+        key = None
     data = load_data(SAVED_DATA)  # load the data from the file
 
     if command == 'save':
-        key = input('Enter the key: ')
+        if key is None:
+            key = input('Enter the key: ')
         data[key] = clipboard.paste()  # gets the clipboard's content
         save_data(SAVED_DATA, data)  # save the data to the file
         print('Data saved successfully!')
 
     elif command == 'load':
-        key = input('Enter the key: ')
+        if key is None:
+            key = input('Enter the key: ')
         if key in data:
             clipboard.copy(data[key])
             print('Data loaded successfully!')
